@@ -12,7 +12,7 @@ export class PersistService {
     this.logger.log('Starting');
   }
 
-  public flush(): void {
+  flush(): void {
     if (this.running) return;
 
     this.queue.take((next) => {
