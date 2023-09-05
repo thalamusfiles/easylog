@@ -1,4 +1,4 @@
-const port = parseInt(process.env.SYSTEM_PORT) || 3001;
+const port = parseInt(process.env.SYSTEM_PORT) || 3002;
 
 const easylogConfig = {
   PRODCTION_MODE: process.env.NODE_ENV === 'production',

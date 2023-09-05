@@ -1,12 +1,12 @@
 import { Logger, Module, NestModule } from '@nestjs/common';
-import { PostController } from './controller/post.controller';
+import { PersistController } from './controller/persist.controller';
+import { AppProcessorModule } from '../processor/processor.module';
 
 @Module({
-  imports: [],
-  providers: [],
+  imports: [AppProcessorModule],
   controllers: [
     //
-    PostController,
+    PersistController,
   ],
 })
 export class AppLogModule implements NestModule {
