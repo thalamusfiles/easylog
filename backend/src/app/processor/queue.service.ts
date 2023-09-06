@@ -1,7 +1,7 @@
 import { Injectable, Logger, Scope } from '@nestjs/common';
 import ChainSemaphore, { DoneFunction } from 'src/commons/chain.semaphore';
 
-type PersistData = any;
+type PersistData = { index: string } & any;
 
 type QueueProps = {
   semaphore: ChainSemaphore;
@@ -71,7 +71,7 @@ export class QueueService {
     const queue = this.queues[name];
 
     // Caso processou todos os dados em progresso
-    if (queue.next >= length) {
+    if (queue.next >= queue.inProgress.length) {
       // Coleta os próximos itens a serem processados
       if (queue.data.length) {
         queue.inProgress = queue.data;

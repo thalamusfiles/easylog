@@ -35,7 +35,6 @@ export class PersistController {
         .then(() => this.persistService.flush());
     } else {
       await this.queueService.queuePersist(data);
-      // TODO: Conectar fila com flush do dado. Esta aguardando o último finalizar.
       await this.persistService.flush();
     }
 
