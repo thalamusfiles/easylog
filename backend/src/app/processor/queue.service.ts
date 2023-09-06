@@ -54,8 +54,6 @@ export class QueueService {
   private async persistData(name: string, data: Record<string, PersistData>, next: DoneFunction): Promise<void> {
     const queue = this.queues[name];
     try {
-      await new Promise((resolve) => setTimeout(resolve, 10000));
-
       queue.data.push(data);
     } catch (ex) {
       this.logger.error(ex);
