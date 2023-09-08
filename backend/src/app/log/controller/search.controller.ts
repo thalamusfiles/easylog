@@ -22,7 +22,7 @@ export class SearchController {
   async search(@Param('index') index: string, @Query() query: LogSearchDto): Promise<any> {
     this.logger.log('search');
 
-    const itens = this.searchService.seach(index, query);
+    const itens = await this.searchService.seach(index, query.where);
 
     return itens;
   }
@@ -37,7 +37,7 @@ export class SearchController {
   async searchFromPost(@Param('index') index: string, @Body() body: LogSearchDto): Promise<any> {
     this.logger.log('searchFromPost');
 
-    const itens = this.searchService.seach(index, body);
+    const itens = await this.searchService.seach(index, body.where);
 
     return itens;
   }

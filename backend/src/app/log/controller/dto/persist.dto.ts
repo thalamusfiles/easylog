@@ -4,10 +4,13 @@ import { IsBooleanString, IsOptional } from 'class-validator';
 
 // DTO Opções de percistência disponíveis
 @Exclude()
-export class LogPersistDto {
+export class LogPersistOptionsDto {
   @ApiProperty({ description: 'Registrar de forma assincrona?' })
   @Expose()
   @IsBooleanString()
   @IsOptional()
   async?: 'true' | 'false';
 }
+
+// DTO Opções de percistência disponíveis
+export type LogPersistDto = Record<string, any>;

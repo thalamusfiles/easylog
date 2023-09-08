@@ -1,9 +1,10 @@
 import { Controller, Logger, Param, Post, Body, UsePipes, Query } from '@nestjs/common';
 import { RegisterValidationPipe } from '../../../commons/validation.pipe';
-import { ApiOperation, ApiParam } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { QueueService } from 'src/app/processor/queue.service';
 import { PersistService } from 'src/app/processor/persist.service';
-import { LogPersistDto } from './dto/persist.dto';
+import { LogPersistDto, LogPersistOptionsDto } from './dto/persist.dto';
+import LogRawData from 'src/commons/type/lograwdata';
 
 @Controller('log')
 export class PersistController {
@@ -21,9 +22,10 @@ export class PersistController {
    */
   @ApiOperation({ tags: ['Log'], summary: 'Registra o log de dados' })
   @ApiParam({ name: 'index', description: 'Indice para agrupamento dos dados' })
+  @ApiBody({ schema: { type: 'object', nullable: false } })
   @Post('/:index')
   @UsePipes(new RegisterValidationPipe())
-  async persist(@Param('index') index: string, @Query() query: LogPersistDto, @Body() body: any): Promise<any> {
+  async persist(@Param('index') index: string, @Query() query: LogPersistOptionsDto, @Body() body: LogPersistDto): Promise<any> {
     this.logger.log('persist');
 
     const data = this.formatData(index, body);
@@ -39,11 +41,11 @@ export class PersistController {
     return data;
   }
 
-  private formatData(index: string, body: any) {
+  private formatData(index: string, data: any): LogRawData {
     return {
       index,
       time: new Date(),
-      body,
+      data,
     };
   }
 }
