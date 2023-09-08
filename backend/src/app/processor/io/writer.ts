@@ -36,7 +36,7 @@ export class Writer {
       this.logger.warn('Node ID is required to cluster.');
     }
 
-    this.normalizeAndCreateDirdirPath();
+    this.normalizeAndCreateDirPath();
     this.findLastLogFile();
     if (!this.currentPath) {
       this.changeCurrentFile();
@@ -59,7 +59,7 @@ export class Writer {
     }
   }
 
-  private normalizeAndCreateDirdirPath() {
+  private normalizeAndCreateDirPath() {
     this.logger.log('Checking if a folder exists.');
     if (this.dirname) {
       if (!path.isAbsolute(this.dirname)) {

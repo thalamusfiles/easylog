@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
 import { IsBooleanString, IsOptional } from 'class-validator';
 
-// DTO find User
+// DTO Opções de percistência disponíveis
 @Exclude()
 export class LogPersistDto {
   @ApiProperty({ description: 'Registrar de forma assincrona?' })

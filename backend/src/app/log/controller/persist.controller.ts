@@ -1,6 +1,6 @@
 import { Controller, Logger, Param, Post, Body, UsePipes, Query } from '@nestjs/common';
 import { RegisterValidationPipe } from '../../../commons/validation.pipe';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiParam } from '@nestjs/swagger';
 import { QueueService } from 'src/app/processor/queue.service';
 import { PersistService } from 'src/app/processor/persist.service';
 import { LogPersistDto } from './dto/persist.dto';
@@ -17,12 +17,10 @@ export class PersistController {
   }
 
   /**
-   * Registra o log de dados para processamento e consulta
+   * Registra o log de dados
    */
-  @ApiOperation({
-    tags: ['Log'],
-    summary: 'Registra o log de dados para processamento e consulta',
-  })
+  @ApiOperation({ tags: ['Log'], summary: 'Registra o log de dados' })
+  @ApiParam({ name: 'index', description: 'Indice para agrupamento dos dados' })
   @Post('/:index')
   @UsePipes(new RegisterValidationPipe())
   async persist(@Param('index') index: string, @Query() query: LogPersistDto, @Body() body: any): Promise<any> {

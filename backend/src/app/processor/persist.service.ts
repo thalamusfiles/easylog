@@ -12,10 +12,7 @@ export class PersistService {
   private readonly writers: Record<string, Writer> = {};
   private running: boolean = false;
 
-  constructor(
-    //@Inject('QueueService') // 😁
-    private readonly queueService: QueueService,
-  ) {
+  constructor(private readonly queueService: QueueService) {
     this.logger.log('Starting');
   }
 
@@ -55,7 +52,7 @@ export class PersistService {
 
   private initWriter(index: string) {
     if (!this.writers[index]) {
-      const dirname = `${logConfig.FOLDER_PATH}/${index}/raw`;
+      const dirname = this.resolveDirname(index);
 
       this.writers[index] = new Writer({
         nodeId: logConfig.NODE_ID,
@@ -64,5 +61,9 @@ export class PersistService {
         dirname,
       });
     }
+  }
+
+  private resolveDirname(index: string) {
+    return `${logConfig.FOLDER_PATH}/${index}/raw`;
   }
 }
