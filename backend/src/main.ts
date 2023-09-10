@@ -7,10 +7,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // Swagger
-  const config = new DocumentBuilder()
-    .setTitle('Thalamus Easy Log Swagger')
-    .setDescription('All endpoints are available on swagger ')
-    .build();
+  const config = new DocumentBuilder().setTitle('Thalamus Easy Log Swagger').setDescription('All endpoints are available on swagger ').build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);
 

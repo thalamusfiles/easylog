@@ -37,7 +37,6 @@ services:
       - "../:/var/www/app"
       - "/var/www/app/node_modules"
     networks:
-      - docker_iam_backend-net
       - easylog_backend-net
     depends_on:
       - easylog_db
@@ -47,7 +46,5 @@ services:
       ${COMMAND_START}
 
 networks:
-  docker_iam_backend-net:
-    external: true
   easylog_backend-net:
     driver: bridge
