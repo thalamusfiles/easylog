@@ -1,26 +1,5 @@
 version: "3.2"
 services:
-  easylog_db:
-    container_name: easylog_postgres
-    image: postgres:15-alpine
-    shm_size: 1g
-    environment:
-      - POSTGRES_DB=${DATABASE_NAME}
-      - POSTGRES_USER=${DATABASE_USER}
-      - POSTGRES_PASSWORD=${DATABASE_PASS}
-      - TZ=GMT
-    volumes:
-      - type: bind
-        source: "../tmp/${DATABASE_LOCAL_FOLDER}"
-        target: /var/lib/postgresql/data
-        volume:
-          nocopy: true
-    networks:
-      - easylog_backend-net
-    ports:
-      - ${DATABASE_PORT}:5001
-    command: -p 5001
-
   easylog_backend:
     container_name: easylog_backend_server
     build:
@@ -42,8 +21,7 @@ services:
       - easylog_db
     ports:
       - ${SYSTEM_PORT}:${SYSTEM_PORT}
-    command: 
-      ${COMMAND_START}
+    command: ${COMMAND_START}
 
 networks:
   easylog_backend-net:
