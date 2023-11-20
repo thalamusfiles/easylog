@@ -8,10 +8,9 @@ services:
     environment:
       NODE_ENV: ${NODE_ENV}
       SYSTEM_PORT: ${SYSTEM_PORT}
-      DATABASE_HOST: ${DATABASE_HOST}
-      DATABASE_NAME: ${DATABASE_NAME}
-      DATABASE_USER: ${DATABASE_USER}
-      DATABASE_PASS: ${DATABASE_PASS}
+      LOG_NODE_ID: ${LOG_NODE_ID}
+      LOG_FOLDER_PATH: ${LOG_FOLDER_PATH}
+      LOG_MAX_FILE_SIZE: ${LOG_MAX_FILE_SIZE}
     volumes:
       - "../:/var/www/app"
       - "/var/www/app/node_modules"

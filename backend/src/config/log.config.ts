@@ -1,7 +1,7 @@
 const defaultLogConfig = {
   LOG_NODE_ID: '01',
   LOG_FOLDER_PATH: 'tmp/logs',
-  LOG_MAX_FILE_SIZE: 100 * 1024 * 1024,
+  LOG_MAX_FILE_SIZE: 50 * 1024 * 1024,
   LOG_LAZY: false,
 };
 
