@@ -51,37 +51,37 @@ jobs:
 #      - name: Atualiza servidor
 #        run: rsync -e "ssh -i keypair.pem" -avz docs/* ${{ secrets.HOST_USER }}@${{ secrets.HOST_URL }}:${{ secrets.HOST_FOLDER }}/docs
 
-  app_publish_frontend_web:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.update == 'todos' || github.event.inputs.update == 'frontend_web' }}
-
-    steps:
-      # Baixa a release informada
-      - name: Download Release
-        uses: dsaltares/fetch-gh-release-asset@master
-        with:
-          repo: 'thalamusfiles/easylog'
-          version: "tags/${{ github.event.inputs.releasetag }}"
-          file: 'frontend_web.zip'
-          token: ${{ secrets.GITHUB_TOKEN }}
-      # Descompacta frontend_web
-      - name: Descompact Zip
-        shell: bash
-        run: unzip frontend_web.zip 
-      # SSH Key
-      - name: Baixa KeyPair
-        run: |
-          echo "${{ secrets.KEYPAIR_PEM }}" > keypair.pem
-          sudo chmod 400 keypair.pem
-      - name: Adiciona ao known_hosts
-        shell: bash
-        run: |
-          mkdir -p ~/.ssh/
-          ssh-keyscan -H ${{ secrets.HOST_URL }} >> ~/.ssh/known_hosts
-          sudo chmod 600 ~/.ssh/known_hosts
-      #Atualiza frontend
-      - name: Atualiza frontend
-        run: rsync -e "ssh -i keypair.pem" -avz frontend_web/* ${{ secrets.HOST_USER }}@${{ secrets.HOST_URL }}:${{ secrets.HOST_FOLDER }}/frontend_web
+#  app_publish_frontend_web:
+#    runs-on: ubuntu-latest
+#    if: ${{ github.event.inputs.update == 'todos' || github.event.inputs.update == 'frontend_web' }}
+#
+#    steps:
+#      # Baixa a release informada
+#      - name: Download Release
+#        uses: dsaltares/fetch-gh-release-asset@master
+#        with:
+#          repo: 'thalamusfiles/easylog'
+#          version: "tags/${{ github.event.inputs.releasetag }}"
+#          file: 'frontend_web.zip'
+#          token: ${{ secrets.GITHUB_TOKEN }}
+#      # Descompacta frontend_web
+#      - name: Descompact Zip
+#        shell: bash
+#        run: unzip frontend_web.zip 
+#      # SSH Key
+#      - name: Baixa KeyPair
+#        run: |
+#          echo "${{ secrets.KEYPAIR_PEM }}" > keypair.pem
+#          sudo chmod 400 keypair.pem
+#      - name: Adiciona ao known_hosts
+#        shell: bash
+#        run: |
+#          mkdir -p ~/.ssh/
+#          ssh-keyscan -H ${{ secrets.HOST_URL }} >> ~/.ssh/known_hosts
+#          sudo chmod 600 ~/.ssh/known_hosts
+#      #Atualiza frontend
+#      - name: Atualiza frontend
+#        run: rsync -e "ssh -i keypair.pem" -avz frontend_web/* ${{ secrets.HOST_USER }}@${{ secrets.HOST_URL }}:${{ secrets.HOST_FOLDER }}/frontend_web
 
   app_publish_backend:
     runs-on: ubuntu-latest

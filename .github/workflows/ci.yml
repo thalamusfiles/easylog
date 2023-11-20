@@ -124,39 +124,39 @@ jobs:
           tag_name: "v${{ needs.upgrade_version.outputs.tag }}"
           files: backend.zip
   
-  run_build_frontend:
-    runs-on: ubuntu-latest
-    needs: [upgrade_version]
-    if: ${{ github.event.inputs.buildFrontend == 'true' }}
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
-      # Trocar versão node
-      - name: Use Node.js 
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.18
-      # Trocar versão node
-      - name: Copy default Build
-        shell: bash
-        run: cp ./frontend_web/src/.env.default.js ./frontend_web/src/.env.js
-      # Builda Frontend
-      - name: Build Frontend
-        shell: bash
-        run: ./bin/local-build-frontend.sh
-      # Compacta Docs
-      - name: Compact Build Frontend
-        shell: bash
-        run: zip -r frontend_web frontend_web/build 
-      # Gera o release
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: "v${{ needs.upgrade_version.outputs.tag }}"
-          files: frontend_web.zip
+#  run_build_frontend:
+#    runs-on: ubuntu-latest
+#    needs: [upgrade_version]
+#    if: ${{ github.event.inputs.buildFrontend == 'true' }}
+#    steps:
+#      - uses: actions/checkout@v2
+#        with:
+#          fetch-depth: 1
+#      # Trocar versão node
+#      - name: Use Node.js 
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: 18.18
+#      # Trocar versão node
+#      - name: Copy default Build
+#        shell: bash
+#        run: cp ./frontend_web/src/.env.default.js ./frontend_web/src/.env.js
+#      # Builda Frontend
+#      - name: Build Frontend
+#        shell: bash
+#        run: ./bin/local-build-frontend.sh
+#      # Compacta Docs
+#      - name: Compact Build Frontend
+#        shell: bash
+#        run: zip -r frontend_web frontend_web/build 
+#      # Gera o release
+#      - name: Release
+#        uses: softprops/action-gh-release@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          tag_name: "v${{ needs.upgrade_version.outputs.tag }}"
+#          files: frontend_web.zip
 
 #  run_build_docs:
 #    runs-on: ubuntu-latest
