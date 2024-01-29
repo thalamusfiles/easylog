@@ -1,6 +1,8 @@
 import { Injectable, Logger, Scope } from '@nestjs/common';
 import logConfig from 'src/config/log.config';
 import { Reader } from './io/reader';
+import * as fs from 'fs';
+import * as path from 'path';
 import * as events from 'events';
 import LogRawData from 'src/commons/type/lograwdata';
 import { FilterQuery } from 'src/commons/type/whereoperator';
@@ -15,6 +17,12 @@ export class SearchService {
 
   constructor() {
     this.logger.log('Starting');
+  }
+
+  async getIndiceFolders(): Promise<Array<string>> {
+    let  files = fs.readdirSync(logConfig.FOLDER_PATH, { withFileTypes: false, recursive: true }) as string[];
+    
+    return files.filter((fileOrDir) => fs.statSync(`${logConfig.FOLDER_PATH}${path.sep}${fileOrDir}`).isDirectory());
   }
 
   async seach(index: string, where: FilterQuery<LogRawData>): Promise<Array<any>> {

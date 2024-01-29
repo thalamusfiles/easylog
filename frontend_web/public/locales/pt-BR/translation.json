@@ -1,0 +1,137 @@
+{
+    "document.isNotEmpty": "Campo documento obrigatório.",
+    "cityCode.isNotEmpty":"Campo cidade obrigatório.",
+    "cityCode.isString":"",
+    "businessType.isNotEmpty":"Campo tipo de empresa obrigatório.",
+    "businessType.isString":"",
+    "businessType.isArray":"",
+    "limit.minLength": "Limite deve ser maior ou igual a 10.",
+    "limit.maxLength": "Limite deve ser menor ou igual a 9999.",
+    "zipcode.isNotEmpty": "Campo código postal obrigatório.",
+
+    "menu": {
+        "brand": "Register",
+        "home": "Início",
+        "login": "Entrar",
+        "logout": "Sair",
+        "aplications": "Aplicações",
+        "profile": "Perfil",
+        "language": "Idioma",
+        "portuguese": "Português (Brasil)",
+        "apis": "APIs",
+        "persons": "Empresas e pessoas",
+        "type": "Tipo de empresa",
+        "persons_by_address": "Empresas por endereço",
+        "person_legal": "Pessoas jurídicas",
+        "contact": "Contatos",
+        "partners": "Sócios",
+        "help": "Ajuda",
+        "alert": "Alertas",
+        "freemium": "Freemium",
+        "establishments_by_zipcode": "Por código postal",
+        "reports": "Relatórios",
+        "business": "Empresas",
+        "tt_month_state": "Total por mês e estado",
+        "tt_month_state_history": "Total por mês e estado histórico",
+        "tt_month_nature": "Total por natureza",
+        "tt_month_activity": "Total por atividade"
+    },
+    "card": {
+        "developer_guide": "Guia Desenvolvedores",
+        "developer_guide_description": "Acesse aos manuais e realize testes online",
+        "docs": "Documentação",
+        "docs_subtitle": "Api, autenticação, FAQ...",
+        "docs_description": "Manuais do usuário e do desenvolvedor de como utilizar a API Register em sua aplicação.",
+        "swagger": "Swagger",
+        "swagger_subtitle": "Teste api agora",
+        "swagger_description": "Realize testes nesta API com a ferramenta Swagger e simule requisições."
+    },
+    "msg": {
+        "error_400": "Requisição incorreta. Verifique os dados informados e tente novamente.",
+        "error_404": "Registro não encontrado. Verifique os filtros informados.",
+        "error_500": "Ocorreu um erro inesperado. Aguarde um instante e tente novamente.",
+        "enter_filter": "Informe um filtro e click em procurar.",
+        "register_not_found": "Registro não encontrado.",
+        "no_option_selected": "Selecione uma opção acima. Click em uma das opções para liberar a funcionalidade."
+    },
+    "label": {
+        "select": "Selecione",
+        "country": "País",
+        "state": "Estado",
+        "city": "Cidade",
+        "business_type": "Tipo",
+        "business_doc": "CNPJ",
+        "partner_doc": "CPF ou CNPJ",
+        "zipcode": "Código postal",
+        "pager.limit": "Quantidade por página",
+        "pager.offset": "Página",
+        "json_result": "Resultado Json",
+        "result": "Resultado",
+        "formated": "Formatado",
+        "json": "JSON",
+        "xls": "XLS",
+        "table": "Tabela",
+        "valid": "Válido",
+        "naturePerson": "Pessoa Física",
+        "protectedInfo": "Informação protegida"
+    },
+    "action": {
+        "access": "Acessar",
+        "search": "Procurar",
+        "clearform": "Limpar Formulário",
+        "random_search": "Busca aleatória",
+        "show_more": "Ver mais"
+    },
+    "home": {
+        "by_adress": "Buscar por endereço",
+        "persons_description": "Registros relacionados a pessoas físicas e jurídicas",
+        "address_description": "Registros relacionados a estabelecimentos",
+        "person_legal_description": "Consulte informações sobre a pessoa jurídica por meio de seu documento de registro (CNPJ).",
+        "contact_description": "Consulte contato de empresas, telefone, e-mail e fax das pessoas jurídicas de determinada localidade e tipo de negócio (CNAES, Natureza...).",
+        "partner_description": "Consulte informações sobre o sócio da empresa por meio seu documento de registro (CPF/CNPJ).",
+        "establishments_description": "Consulte a lista de empresas localizadas em determinado endereço."
+    },
+    "person": {
+        "legal.title": "Busca por pessoas jurídicas",
+        "legal.description": "Consulte informações sobre a pessoa jurídica por meio de seu documento de registro (CNPJ).",
+        "legal.meta": "Encontre informação da empresa pelo CNPJ de todas as empresas brasileiras registradas na Receita Federal. Buscador/Gerador de CNPJ aleatório.",
+        "partner.title": "Busca por sócios de empresas",
+        "partner.description": "Consulte informações sobre o sócio da empresa por meio seu documento de registro (CPF/CNPJ).",
+        "partner.meta":"Encontre qualquer informação dos sócios de todas as empresas brasileiras registradas na Receita Federal. Buscador/Gerador de CPF aleatório.",
+        "contact.title": "Busca por contatos",
+        "contact.description": "Consulte telefone, e-mail e fax das pessoas jurídicas de determinada localidade e tipo de negócio.",
+        "contact.meta": "Consulte telefone, e-mail e fax das pessoas jurídicas de determinada localidade e tipo de negócio.",
+        "cpf_search" : "A busca por CPF é aproximada, pois não são informados os números completos dos CPFs ao coletar os dados."
+    },
+    "address": {
+        "zipcode.title": "Busca por código postal",
+        "zipcode.description": "Consulte empresas cadastradas a partir de seu código postal (CEP).",
+        "zipcode.meta": "Busque empresas por endereço de todas as empresas brasileiras registradas na Receita Federal."
+    },
+    "report": {
+        "business_description": "Relatórios e totalizadores dos registros de empresas e estabelecimentos",
+        "establishment": {
+            "total_month_state.description":"Gráfico com quantidade total de novas empresas (Matriz e Filial) de todas as naturezas, registradas no mês.",
+            "total_month_state.chart":"Novas empresas por estado em {{month}}",
+            "total_month_state_history.chart": "Histórico de novas empresas por estado e mês"
+        },
+        "type_description": "Gráfico com quantidade total de novas empresas agrupadas por tipo de atividade ou natureza",
+        "type": {
+            "total_month_nature.description":"Gráfico com quantidade total de novas empresas (Simples, MEI, ...) agrupadas por natureza.",
+            "total_month_nature.chart":"Novas empresas por natureza {{month}}",
+            "total_month_activity.description":"Gráfico com quantidade total de novas empresas (Simples, MEI, ...) agrupadas por tipo de atividade (CNAE).",
+            "total_month_activity.chart":"Novas empresas por atividade {{month}}"
+        }
+    },
+    "type": {
+        "business.title": "Busca por tipo de empresa",
+        "business.description": "Consulte empresas cadastradas a partir de seu tipo(CNAES, Natureza...).",
+        "business.meta": "Busque dados de qualquer empresas pelo Tipo e CNAE (Atividade Econômica) de todas as empresas brasileiras registradas na Receita Federal."
+    },
+    "languages": {
+        "pt-BR": "Português (Brasil)"
+    },
+    "country": {
+        "brazil": "Brasil"
+    }
+}

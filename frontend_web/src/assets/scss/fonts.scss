@@ -1,0 +1,51 @@
+
+@font-face {
+    font-family: 'Gt Eesti Regular';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/gt_eesti_pro/GTEestiProText-Regular.eot'); /* IE9 Compat Modes */
+    src: local('Gt Eesti'), local('Gt Eesti'),
+         url('../fonts/gt_eesti_pro/GTEestiProText-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('../fonts/gt_eesti_pro/GTEestiProText-Regular.woff2') format('woff2'), /* Super Modern Browsers */
+         url('../fonts/gt_eesti_pro/GTEestiProText-Regular.woff') format('woff'), /* Modern Browsers */
+         url('../fonts/gt_eesti_pro/GTEestiProText-Regular.ttf') format('truetype') /* Safari, Android, iOS */
+  }
+  
+  
+  @font-face {
+    font-family: 'Gt Eesti Medium';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/gt_eesti_pro/GTEestiProText-Medium.eot'); /* IE9 Compat Modes */
+    src: local('Gt Eesti'), local('Gt Eesti Medium'),
+         url('../fonts/gt_eesti_pro/GTEestiProText-Medium.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('../fonts/gt_eesti_pro/GTEestiProText-Medium.woff2') format('woff2'), /* Super Modern Browsers */
+         url('../fonts/gt_eesti_pro/GTEestiProText-Medium.woff') format('woff'), /* Modern Browsers */
+         url('../fonts/gt_eesti_pro/GTEestiProText-Medium.ttf') format('truetype') /* Safari, Android, iOS */
+  }
+  
+  
+  @font-face {
+    font-family: 'Gt Eesti Thin';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/gt_eesti_pro/GTEestiProText-Thin.eot'); /* IE9 Compat Modes */
+    src: local('Gt Eesti'), local('Gt Eesti'),
+         url('../fonts/gt_eesti_pro/GTEestiProText-Thin.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('../fonts/gt_eesti_pro/GTEestiProText-Thin.woff2') format('woff2'), /* Super Modern Browsers */
+         url('../fonts/gt_eesti_pro/GTEestiProText-Thin.woff') format('woff'), /* Modern Browsers */
+         url('../fonts/gt_eesti_pro/GTEestiProText-Thin.ttf') format('truetype') /* Safari, Android, iOS */
+  }
+  
+  
+  body {
+    font-family: 'Gt Eesti Thin';
+  }
+  
+  body h1 {
+    font-family: 'Gt Eesti Medium';
+  }
+  
+  .dashboard-content {
+    font-family: 'Gt Eesti Regular';
+  }

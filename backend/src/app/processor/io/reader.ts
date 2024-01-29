@@ -27,9 +27,7 @@ export class Reader {
     try {
       const files = fs.readdirSync(this.dirname, { withFileTypes: false, recursive: true }) as string[];
 
-      files.filter((fileOrDir) => !fs.statSync(`${this.dirname}${path.sep}${fileOrDir}`).isDirectory());
-
-      return files;
+      return files.filter((fileOrDir) => !fs.statSync(`${this.dirname}${path.sep}${fileOrDir}`).isDirectory());
     } catch (ex) {
       if (ex?.code !== 'ENOENT') {
         this.logger.error(ex);

@@ -19,6 +19,7 @@ async function bootstrap() {
     });
   }
 
+  console.log('PORT:' + easylogConfig.PORT);
   await app.listen(easylogConfig.PORT);
 }
 bootstrap();

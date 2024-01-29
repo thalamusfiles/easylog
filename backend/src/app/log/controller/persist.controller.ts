@@ -20,7 +20,7 @@ export class PersistController {
   /**
    * Registra o log de dados
    */
-  @ApiOperation({ tags: ['Log'], summary: 'Registra o log de dados' })
+  @ApiOperation({ tags: ['Log Persist'], summary: 'Registra o log de dados' })
   @ApiParam({ name: 'index', description: 'Indice para agrupamento dos dados' })
   @ApiBody({ schema: { type: 'object', nullable: false } })
   @Post('/:index')

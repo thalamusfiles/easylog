@@ -1,0 +1,263 @@
+@use 'sass:math';
+
+// Loaders
+$loader-lg-diameter: 64px;
+$loader-lg-content-font-size: $font-size-lg* 2;
+
+$loader-md-diameter: 36px;
+$loader-md-content-font-size: $font-size-base * 2;
+
+$loader-sm-diameter: 18px;
+$loader-sm-content-font-size: $font-size-base* 2;
+
+$loader-xs-diameter: 16px;
+$loader-xs-content-font-size: $font-size-sm* 2;
+
+$loader-default-diameter: $loader-sm-diameter;
+$loader-default-content-font-size: $font-size-sm;
+
+// Loaders - adjust-huener
+$loader-adjust-hue-ring-width: 3px;
+
+// Loaders - spacing
+$loader-content-adjust-hue-spacing-horizontal: 12px;
+$loader-content-adjust-hue-spacing-vertical: 10px;
+$loader-content-adjust-hue-spacing-horizontal-xs: 10px;
+
+$loader-bg: rgba($body-bg, 0.3);
+$loader-rotor-border-color: $body-bg;
+
+$loader-backdrop-bg: $body-bg;
+$loader-backdrop-inverse-bg: $dark;
+
+$text-inverse-color: $body-bg;
+$loader-ring-inverse-border-color: $dark;
+$loader-rotor-inverse-top-color: $dark;
+
+@mixin clearfix() {
+
+    &::before,
+    &::after {
+        content: ' '; // 1
+        display: table; // 2
+    }
+
+    &::after {
+        clear: both;
+    }
+}
+
+@mixin set-side-length($side) {
+    width: $side;
+    height: $side;
+
+    &::before,
+    &::after {
+        width: $side;
+        height: $side;
+    }
+}
+
+@mixin loader-size($diameter, $font-size) {
+    .rs-loader {
+        &-adjust-hue {
+            @include set-side-length($diameter);
+        }
+
+        &-content {
+            font-size: $font-size;
+            line-height: unit(math.div($diameter, $font-size));
+        }
+
+        &-vertical & {
+            height: ($diameter + $loader-content-adjust-hue-spacing-vertical + $line-height-base);
+        }
+
+        &-vertical &-content {
+            line-height: unit(math.div($line-height-base, $font-size));
+        }
+    }
+}
+
+@mixin loader-adjust-hue() {
+
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        display: block;
+        border-radius: 50%;
+    }
+
+    &::before {
+        border: $loader-adjust-hue-ring-width solid var(--rs-loader-ring);
+    }
+
+    &::after {
+        border-width: $loader-adjust-hue-ring-width;
+        border-style: solid;
+        border-color: $loader-rotor-border-color transparent transparent;
+    }
+}
+
+.rs-loader {
+    @include clearfix();
+    @include loader-size($loader-default-diameter, $loader-default-content-font-size);
+
+    display: inline-block;
+    background: $loader-bg;
+
+    //Loader adjust-hue
+    &-adjust-hue {
+        position: relative;
+        display: inline-block;
+        float: left;
+
+        @include loader-adjust-hue();
+    }
+
+    //Loader adjust-hue
+    &-content {
+        float: left;
+        display: inline-block;
+    }
+
+    &-adjust-hue+&-content {
+        margin-left: $loader-content-adjust-hue-spacing-horizontal;
+
+        //Extra small size loader spacing is smaller.
+        .rs-loader-xs & {
+            margin-left: $loader-content-adjust-hue-spacing-horizontal-xs;
+        }
+    }
+
+    // Backdrop
+    &-backdrop {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: $loader-backdrop-bg;
+    }
+
+    // Vertical
+    &-vertical {
+        width: auto;
+        display: inline-block;
+
+        .rs-loader {
+            flex-direction: column;
+        }
+
+        .rs-loader-adjust-hue {
+            margin: 0 auto;
+        }
+
+        .rs-loader-content {
+            line-height: unit(math.div($line-height-base, $loader-default-content-font-size));
+            text-align: center;
+        }
+
+        .rs-loader-adjust-hue,
+        .rs-loader-content {
+            display: block;
+            float: none;
+        }
+
+        .rs-loader-adjust-hue+.rs-loader-content {
+            margin-left: 0;
+            margin-top: $loader-content-adjust-hue-spacing-vertical;
+        }
+    }
+
+    // inverse
+    &-inverse {
+        .rs-loader-content {
+            color: $text-inverse-color;
+        }
+
+        .rs-loader-backdrop {
+            background: $loader-backdrop-inverse-bg;
+        }
+
+        .rs-loader-adjust-hue::before {
+            border-color: $loader-ring-inverse-border-color;
+        }
+
+        .rs-loader-adjust-hue::after {
+            border-top-color: $loader-rotor-inverse-top-color;
+        }
+    }
+
+    // Position center
+    &-center,
+    &-backdrop-wrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        width: 100%;
+        height: 100%;
+
+        .rs-loader {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        // horizontal loader need set display table to set width auto
+        &:not(.rs-loader-vertical) {
+            .rs-loader {
+                display: flex;
+            }
+        }
+
+        // vertical content text align center
+        &.rs-loader-vertical {
+            .rs-loader {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        .rs-loader-content {
+            z-index: 1;
+        }
+    }
+
+    //Sizes
+    &-lg {
+        @include loader-size($loader-lg-diameter, $loader-lg-content-font-size);
+    }
+
+    &-md {
+        @include loader-size($loader-md-diameter, $loader-md-content-font-size);
+    }
+
+    &-sm {
+        @include loader-size($loader-sm-diameter, $loader-sm-content-font-size);
+    }
+
+    &-xs {
+        @include loader-size($loader-xs-diameter, $loader-xs-content-font-size);
+    }
+}
+
+// Set loader width auto
+.rs-loader-wrapper {
+    z-index: 9999;
+    display: inline-block;
+    width: auto;
+    // Clear white space
+    line-height: 0;
+}

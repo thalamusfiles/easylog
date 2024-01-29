@@ -1,0 +1,152 @@
+@use 'sass:math';
+
+$spacer: 0.8rem;
+$font-size-base: 0.95rem !default;
+$line-height-base:            1.3;
+
+$navbar-padding-y: math.div($spacer, 2.5) !default;
+$navbar-padding-x: $spacer !default;
+
+$nav-link-padding-y: .25rem !default;
+
+$form-group-margin-bottom: .5rem;
+$form-label-margin-bottom: .2rem !default;
+$label-margin-bottom: .05rem;
+
+@import "thalamus";
+@import "ticons";
+
+@import "~bootstrap/scss/bootstrap";
+@import "scss/loader";
+@import "scss/fonts.scss";
+
+.mainContainer {
+  min-height: 350px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.navbar-spacer {
+  border-left: 1px solid $gray-600 ; 
+  margin: 8px 12px;
+  opacity: 0.5;
+}
+
+.navbar-brand img {
+  width: 18px;
+  height: 18px;
+  margin-right: 5px;
+  margin-top: -3px;
+}
+
+.topSpace {
+  margin-top: $nav-link-height + $navbar-padding-x + 1;
+}
+
+.header {
+  border-bottom: 2px solid $gray-200;
+
+  .fa-layers-counter {
+    background-color: $secondary;
+    font-weight: 600;
+    transform: scale(.4);
+    padding: 0.35em 0.6em;
+  }
+}
+
+#user-dd ~ .dropdown-menu {
+  left: -$dropdown-min-width + 3rem;
+}
+
+.footer {
+  margin-top: 10px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.list-tile {
+  cursor: pointer;
+  padding-top: $input-btn-padding-y;
+  padding-bottom: $input-btn-padding-y;
+
+  &:hover {
+    background-color: $gray-200;
+  }
+
+  button {
+    padding-left: 10px;
+    width: 35px;
+    height: 35px;
+
+    .fa-pull-left {
+      margin-left: -3px;
+    }
+    
+    .fa-pull-right {
+      margin-top: -4px;
+      margin-right: -6px;
+    }
+  }
+}
+
+.dashboard {
+  margin-top: $nav-link-height + $navbar-padding-x + 1.5;
+
+  h1 {
+    margin-bottom: $spacer * 1.5;
+  }
+}
+
+.sidebar {
+  input {
+    border-left: 0;
+    background: $input-group-addon-bg;
+  }
+
+  .title {
+    margin-top: $input-btn-padding-y-sm * 2;
+    margin-bottom: $input-btn-padding-y-sm * 2;
+  }
+
+  .action {
+    padding-top: $input-btn-padding-y-sm;
+    padding-bottom: $input-btn-padding-y-sm;
+  }
+}
+
+table {
+  //Utilizado em tds com botões
+  td.actions {
+    padding: 0 3px;
+    button {
+      padding: 0.15rem 0.4rem;
+    }
+  }
+  //Formulário dentro de tabela
+  .form-group {
+    margin-bottom: 0;
+  }
+}
+
+.blur {
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px);
+}
+
+/*FIXs*/
+div.react-datepicker {
+  min-width: 328px;
+}
+
+.toast-body {
+  background-color: #fff !important;
+}

@@ -1,0 +1,42 @@
+{
+  "short_name": "T Register",
+  "name": "Thalamus Register",
+  "icons": [
+    {
+      "src": "logo526.png",
+      "sizes": "526x526",
+      "type": "image/png"
+    },
+    {
+      "src": "logo144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "logo64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+     "src": "screenshots_pessoa_juridica_wide.png",
+      "sizes": "1241x621",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Busca Pessoa Jurídica"
+    },
+    {
+     "src": "screenshots_pessoa_juridica_narrow.png",
+      "sizes": "428x858",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Busca Pessoa Jurídica"
+    }
+  ],
+  "description": "Sistema para consulta de dados públicos via API.",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

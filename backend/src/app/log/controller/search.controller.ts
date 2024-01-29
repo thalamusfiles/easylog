@@ -15,6 +15,19 @@ export class SearchController {
   /**
    * Coleta os logs de dados
    */
+  @ApiOperation({ tags: ['Log'], summary: 'Coleta os índices existentes' })
+  @Get('/indexes')
+  @UsePipes(new RegisterValidationPipe())
+  async indexes(): Promise<any> {
+    this.logger.log('indexes');
+
+    const indexes = await this.searchService.getIndiceFolders();
+    return indexes.map((index) => ({ name: index }));
+  }
+
+  /**
+   * Coleta os logs de dados
+   */
   @ApiOperation({ tags: ['Log'], summary: 'Coleta os logs de dados' })
   @ApiParam({ name: 'index', description: 'Indice para agrupamento dos dados' })
   @Get('/:index')
