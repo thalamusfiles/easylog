@@ -13,10 +13,10 @@ export class AllLogsCtrl {
   }
 
   // AllLogsCtrl
+  @observable page = 1;
+  @observable perPage = 250;
   @observable filterIndex = '';
-  @observable filters = `{ "where": {
-  
-}}`;
+  @observable filters = '';
 
   @observable waiting: boolean | null = null;
   @observable indexes: Indexes = [];
@@ -29,7 +29,7 @@ export class AllLogsCtrl {
   handleClear = () => {
     this.filterIndex = '';
     this.filters = `{ "where": {
-  
+      "data": {}
 }}`;
     this.response = null;
   };
@@ -45,6 +45,20 @@ export class AllLogsCtrl {
   };
 
   @action
+  handlePreviewsPage = () => {
+    if (this.page) {
+      this.page--;
+    }
+    this.search();
+  };
+
+  @action
+  handleNextPage = () => {
+    this.page++;
+    this.search();
+  };
+
+  @action
   findIndexes = () => {
     new SearchDataSource()
       .findIndexes()
@@ -54,6 +68,12 @@ export class AllLogsCtrl {
       .catch((ex) => {
         this.notifyExeption(ex);
       });
+  };
+
+  @action
+  handleSearch = () => {
+    this.page = 1;
+    this.search();
   };
 
   @action
@@ -68,6 +88,8 @@ export class AllLogsCtrl {
     let filters;
     try {
       filters = JSON.parse(this.filters);
+      filters.page = this.page;
+      filters.perPage = this.perPage;
     } catch (ex) {
       this.notifyExeption(ex);
       this.waiting = false;
@@ -75,7 +97,7 @@ export class AllLogsCtrl {
     }
 
     new SearchDataSource()
-      .search(this.filterIndex, JSON.parse(this.filters))
+      .search(this.filterIndex, filters)
       .then((response) => {
         this.waiting = false;
         this.response = response?.data || [];

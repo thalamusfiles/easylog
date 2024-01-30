@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
-import { IsOptional } from 'class-validator';
+import { IsNumber, IsOptional } from 'class-validator';
 import LogRawData from 'src/commons/type/lograwdata';
 import { FilterQuery } from 'src/commons/type/whereoperator';
 
@@ -11,4 +11,16 @@ export class LogSearchDto {
   @Expose()
   @IsOptional()
   where?: FilterQuery<LogRawData>;
+
+  @ApiProperty({ description: 'Página' })
+  @Expose()
+  @IsNumber()
+  @IsOptional()
+  page?: number
+
+  @ApiProperty({ description: 'Quantidade por página' })
+  @Expose()
+  @IsNumber()
+  @IsOptional()
+  perPage?: number
 }

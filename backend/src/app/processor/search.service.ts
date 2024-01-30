@@ -10,6 +10,7 @@ import { isEmpty } from 'lodash';
 import { testJsonWhere } from 'src/commons/testjsonwhere';
 
 type ReadFileCallback = (string) => void;
+type SearchOptions = { page?: number; perPage?: number };
 
 @Injectable({ scope: Scope.DEFAULT })
 export class SearchService {
@@ -20,39 +21,59 @@ export class SearchService {
   }
 
   async getIndiceFolders(): Promise<Array<string>> {
-    let  files = fs.readdirSync(logConfig.FOLDER_PATH, { withFileTypes: false, recursive: true }) as string[];
-    
+    let files = fs.readdirSync(logConfig.FOLDER_PATH, { withFileTypes: false, recursive: true }) as string[];
+
     return files.filter((fileOrDir) => fs.statSync(`${logConfig.FOLDER_PATH}${path.sep}${fileOrDir}`).isDirectory());
   }
 
-  async seach(index: string, where: FilterQuery<LogRawData>): Promise<Array<any>> {
+  async seach(index: string, where: FilterQuery<LogRawData>, options?: SearchOptions): Promise<Array<any>> {
     const list: Array<any> = [];
 
     const dirname = this.resolveDirname(index);
     const reader = this.createReader(dirname);
     const files = reader.listFiles();
 
-    await this.readFileByFile(reader, files, (line: string) => {
-      try {
-        const json = JSON.parse(line);
-        if (this.testWhere(json, where)) {
-          list.push(json);
+    let lineIdx = 0;
+    const startLine = (options.page - 1) * options.perPage;
+    const endLine = startLine + options.perPage;
+
+    // Carrega os arquivos
+    for (const rl of this.readFileByFile(reader, files)) {
+      // Percorre cada linha do arquivo
+      for await (const line of rl) {
+        try {
+          const json = JSON.parse(line);
+          // Verifica se atende as condições dos filtros
+          if (this.testWhere(json, where)) {
+            // Se possui paginação
+            if (options.perPage) {
+              // Verifica se já encontrou a quantidade de registros informados
+              if (startLine <= lineIdx && lineIdx < endLine) {
+                list.push(json);
+              } // Se superou a quantidade por página interrompe a busca
+              else if (lineIdx >= endLine) {
+                break;
+              }
+              lineIdx++;
+            } // Se não existe paginação, adiciona
+            else {
+              list.push(json);
+            }
+          }
+        } catch (ex) {
+          this.logger.warn(`JSON corrupted in index ${index}: ${line}`);
         }
-      } catch (ex) {
-        this.logger.warn(`JSON corrupted in index ${index}: ${line}`);
       }
-    });
+    }
 
     return list;
   }
 
-  async readFileByFile(reader: Reader, files: Array<string>, callback: ReadFileCallback): Promise<void> {
+  *readFileByFile(reader: Reader, files: Array<string>) {
     for (const file of files) {
       const rl = reader.createReadStream(file);
 
-      rl.on('line', callback);
-
-      await events.once(rl, 'close');
+      yield rl;
     }
   }
 

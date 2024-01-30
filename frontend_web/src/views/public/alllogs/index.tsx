@@ -1,4 +1,4 @@
-import { Button, Form, Table } from 'react-bootstrap';
+import { Button, Form, Pagination, Table } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { AllLogsCtrl, AllLogsProvider, useAllLogsCtrlStore } from './ctrl';
@@ -8,6 +8,7 @@ import { observer } from 'mobx-react-lite';
 const ctrl = new AllLogsCtrl();
 const AllLogsPage = () => {
   useEffect(() => {
+    ctrl.handleClear();
     ctrl.findIndexes();
   }, [ctrl]);
 
@@ -61,7 +62,7 @@ const SearchBar = observer(() => {
             </Form.Select>
           </Form.Group>
 
-          <Button type="button" className="mb-2 float-end" disabled={!!ctrl.waiting} onClick={ctrl.search}>
+          <Button type="button" className="mb-2 float-end" disabled={!!ctrl.waiting} onClick={ctrl.handleSearch}>
             Buscar
           </Button>
 
@@ -77,34 +78,53 @@ const SearchBar = observer(() => {
 const LogsTable = observer(() => {
   const ctrl = useAllLogsCtrlStore();
   return (
-    <Table responsive striped>
-      <thead>
-        <tr>
-          <th>Índice</th>
-          <th>Data</th>
-          <th>Informações</th>
-        </tr>
-      </thead>
-      <tbody>
-        {ctrl?.response === null && (
+    <>
+      <Table responsive striped>
+        <thead>
           <tr>
-            <td colSpan={3}>Selecione um índice e realize uma busca</td>
+            <th>
+              Índice
+              <br />
+              (Index)
+            </th>
+            <th>
+              Data
+              <br />
+              (Time)
+            </th>
+            <th>
+              Informações
+              <br />
+              (Data)
+            </th>
           </tr>
-        )}
-        {ctrl?.response?.length === 0 && (
-          <tr>
-          <td colSpan={3}>Nenhum resultado encontrado</td>
-        </tr>
-        )}
-        {ctrl?.response?.map((log, idx) => (
-          <tr key={idx}>
-            <td>{log.index}</td>
-            <td>{log.time}</td>
-            <td>{JSON.stringify(log.data)}</td>
-          </tr>
-        ))}
-      </tbody>
-    </Table>
+        </thead>
+        <tbody>
+          {ctrl?.response === null && (
+            <tr>
+              <td colSpan={3}>Selecione um índice e realize uma busca</td>
+            </tr>
+          )}
+          {ctrl?.response?.length === 0 && (
+            <tr>
+              <td colSpan={3}>Nenhum resultado encontrado</td>
+            </tr>
+          )}
+          {ctrl?.response?.map((log, idx) => (
+            <tr key={idx}>
+              <td>{log.index}</td>
+              <td>{log.time}</td>
+              <td>{JSON.stringify(log.data)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+      <Pagination className="mr-2" size="sm" style={{ marginBottom: 0 }}>
+        <Pagination.Prev onClick={ctrl!.handlePreviewsPage} disabled={ctrl.page === 1} id="previews_page" />
+        <Pagination.Item>{ctrl!.page}</Pagination.Item>
+        <Pagination.Next onClick={ctrl!.handleNextPage} id="next_page" />
+      </Pagination>
+    </>
   );
 });
 

@@ -36,7 +36,6 @@ export class SearchController {
     this.logger.log('search');
 
     const itens = await this.searchService.seach(index, query.where);
-
     return itens;
   }
 
@@ -47,11 +46,10 @@ export class SearchController {
   @ApiParam({ name: 'index', description: 'Indice para agrupamento dos dados' })
   @Post('/:index/_search')
   @UsePipes(new RegisterValidationPipe())
-  async searchFromPost(@Param('index') index: string, @Body() body: LogSearchDto): Promise<any> {
+  async searchFromPost(@Param('index') index: string, @Body() { where, ...options }: LogSearchDto): Promise<any> {
     this.logger.log('searchFromPost');
 
-    const itens = await this.searchService.seach(index, body.where);
-
+    const itens = await this.searchService.seach(index, where, options);
     return itens;
   }
 }
