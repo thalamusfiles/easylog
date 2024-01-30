@@ -9,7 +9,6 @@ const ctrl = new AllLogsCtrl();
 const AllLogsPage = () => {
   useEffect(() => {
     ctrl.findIndexes();
-    ctrl.search();
   }, [ctrl]);
 
   return (
@@ -35,27 +34,33 @@ const SearchBar = observer(() => {
   const ctrl = useAllLogsCtrlStore();
   return (
     <Form>
-      <Row className="align-items-center">
-        <Col xl={2}>
-          <Form.Label htmlFor="country" visuallyHidden>
-            Índices:
-          </Form.Label>
-          <Form.Select aria-label="Default select example">
-            <option value={'*'}>Todos os indices</option>
-            {ctrl.indexes.map((index, idx) => (
-              <option key={idx} value={index.name}>
-                {index.name}
-              </option>
-            ))}
-          </Form.Select>
-        </Col>
+      <Row>
         <Col>
-          <Form.Label htmlFor="document" visuallyHidden>
-            Log contém:
-          </Form.Label>
-          <Form.Control id="document" value={ctrl.filterContains} onChange={ctrl.handleContains} isInvalid={!!ctrl.erros?.document} />
+          <Form.Group className="mb-3">
+            <Form.Label htmlFor="filters">Filtros:</Form.Label>
+            <Form.Control
+              id="filters"
+              as="textarea"
+              rows={3}
+              value={ctrl.filters}
+              onChange={ctrl.handleContains}
+              isInvalid={!!ctrl.erros?.document}
+            />
+          </Form.Group>
         </Col>
         <Col xl={3}>
+          <Form.Group className="mb-3">
+            <Form.Label htmlFor="country">Índices:</Form.Label>
+            <Form.Select aria-label="Default select example" onChange={ctrl.handleIndex}>
+              <option>Selecione um índice</option>
+              {ctrl.indexes.map((index, idx) => (
+                <option key={idx} value={index.name}>
+                  {index.name}
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+
           <Button type="button" className="mb-2 float-end" disabled={!!ctrl.waiting} onClick={ctrl.search}>
             Buscar
           </Button>
@@ -72,15 +77,25 @@ const SearchBar = observer(() => {
 const LogsTable = observer(() => {
   const ctrl = useAllLogsCtrlStore();
   return (
-    <Table>
+    <Table responsive striped>
       <thead>
         <tr>
-          <td>Índice</td>
-          <td>Data</td>
-          <td>Informações</td>
+          <th>Índice</th>
+          <th>Data</th>
+          <th>Informações</th>
         </tr>
       </thead>
       <tbody>
+        {ctrl?.response === null && (
+          <tr>
+            <td colSpan={3}>Selecione um índice e realize uma busca</td>
+          </tr>
+        )}
+        {ctrl?.response?.length === 0 && (
+          <tr>
+          <td colSpan={3}>Nenhum resultado encontrado</td>
+        </tr>
+        )}
         {ctrl?.response?.map((log, idx) => (
           <tr key={idx}>
             <td>{log.index}</td>

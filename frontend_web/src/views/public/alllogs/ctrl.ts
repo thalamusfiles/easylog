@@ -13,8 +13,10 @@ export class AllLogsCtrl {
   }
 
   // AllLogsCtrl
-  @observable filterIndex = '*';
-  @observable filterContains = '';
+  @observable filterIndex = '';
+  @observable filters = `{ "where": {
+  
+}}`;
 
   @observable waiting: boolean | null = null;
   @observable indexes: Indexes = [];
@@ -25,13 +27,21 @@ export class AllLogsCtrl {
 
   @action
   handleClear = () => {
-    this.filterContains = '';
+    this.filterIndex = '';
+    this.filters = `{ "where": {
+  
+}}`;
     this.response = null;
   };
 
   @action
+  handleIndex = (e: any) => {
+    this.filterIndex = e.target.value;
+  };
+
+  @action
   handleContains = (e: any) => {
-    this.filterContains = e.target.value;
+    this.filters = e.target.value;
   };
 
   @action
@@ -49,21 +59,30 @@ export class AllLogsCtrl {
   @action
   search = () => {
     if (this.waiting) return;
+    if (!this.filterIndex) return;
 
     this.waiting = true;
     this.erroMessages = [];
     this.erros = {};
 
+    let filters;
+    try {
+      filters = JSON.parse(this.filters);
+    } catch (ex) {
+      this.notifyExeption(ex);
+      this.waiting = false;
+      return;
+    }
+
     new SearchDataSource()
-      .search(this.filterIndex)
+      .search(this.filterIndex, JSON.parse(this.filters))
       .then((response) => {
         this.waiting = false;
-        console.log(response?.data)
-        this.response = response?.data;
+        this.response = response?.data || [];
       })
       .catch((ex) => {
         this.waiting = false;
-        this.response = null;
+        this.response = [];
 
         const data = ex.response?.data;
         [this.erroMessages, this.erros] = getFormExceptionErrosToObject(data, { splitByConstraints: true }) as ErrosAsList;
@@ -72,7 +91,6 @@ export class AllLogsCtrl {
       });
   };
 
-  __!: Function;
   notifyExeption = (ex: any) => {
     const status = ex.response?.status;
     const message = ex.message;

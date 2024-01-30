@@ -5,6 +5,8 @@ import { QueueService } from 'src/app/processor/queue.service';
 import { PersistService } from 'src/app/processor/persist.service';
 import { LogPersistDto, LogPersistOptionsDto } from './dto/persist.dto';
 import LogRawData from 'src/commons/type/lograwdata';
+import { FormException } from 'src/commons/form.exception';
+import { isEmpty } from 'lodash';
 
 @Controller('log')
 export class PersistController {
@@ -28,6 +30,8 @@ export class PersistController {
   async persist(@Param('index') index: string, @Query() query: LogPersistOptionsDto, @Body() body: LogPersistDto): Promise<any> {
     this.logger.log('persist');
 
+    this.validate(index, body);
+
     const data = this.formatData(index, body);
     if (query?.async === 'true') {
       this.queueService //
@@ -39,6 +43,16 @@ export class PersistController {
     }
 
     return data;
+  }
+
+  private validate(index: string, body: LogPersistDto) {
+    const validIndex = this.persistService.formatIndex(index);
+    if (validIndex !== index) {
+      throw new FormException([{ kind: 'index', error: 'has_invalid_character' }]);
+    }
+    if (isEmpty(body)) {
+      throw new FormException([{ kind: 'body', error: 'required' }]);
+    }
   }
 
   private formatData(index: string, data: any): LogRawData {

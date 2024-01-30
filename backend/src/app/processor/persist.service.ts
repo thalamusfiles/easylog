@@ -28,6 +28,10 @@ export class PersistService {
     });
   }
 
+  formatIndex(index: string): string {
+    return index.replace(/[^a-z0-9]/gi, '_');
+  }
+
   private persistData(next: DoneFunction): void {
     let data;
     do {
