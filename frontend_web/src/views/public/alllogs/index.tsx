@@ -10,7 +10,7 @@ const AllLogsPage = () => {
   useEffect(() => {
     ctrl.handleClear();
     ctrl.findIndexes();
-  }, [ctrl]);
+  }, []);
 
   return (
     <AllLogsProvider value={ctrl}>
