@@ -1,6 +1,5 @@
 import enUS from 'date-fns/locale/en-US';
 import ptBR from 'date-fns/locale/pt-BR';
-import i18next from 'i18next';
 import moment from 'moment';
 import React from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
@@ -31,7 +30,7 @@ export function IamTimeFormControl(props: IamFormProps) {
       showTimeSelect
       showTimeSelectOnly
       timeIntervals={15}
-      locale={i18next.language}
+      locale={'pt_BR'}
       dateFormat="p"
     />
   );

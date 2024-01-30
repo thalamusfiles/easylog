@@ -1,4 +1,3 @@
-import i18next from 'i18next';
 import { action, computed, makeObservable, observable } from 'mobx';
 import { createContext, useContext } from 'react';
 import { localStorageDef } from '../commons/consts';
@@ -21,8 +20,8 @@ export class Ctx {
   @observable token = null as string | null;
   @observable expiresIn = null as number | null;
 
-  changeLanguage(lng?: string): Promise<Function> {
-    return i18next.changeLanguage(lng);
+  changeLanguage(lng?: string) {
+    //return i18next.changeLanguage(lng);
   }
 
   //Realiza autenticação do usuário
