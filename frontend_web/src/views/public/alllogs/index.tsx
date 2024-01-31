@@ -42,7 +42,7 @@ const SearchBar = observer(() => {
             <Form.Control
               id="filters"
               as="textarea"
-              rows={3}
+              rows={7}
               value={ctrl.filters}
               onChange={ctrl.handleContains}
               isInvalid={!!ctrl.erros?.document}
@@ -50,9 +50,24 @@ const SearchBar = observer(() => {
           </Form.Group>
         </Col>
         <Col xl={3}>
+          <Row>
+            <Col>
+              <Form.Group className="mb-3">
+                <Form.Label htmlFor="begin">Início:</Form.Label>
+                <Form.Control id="begin" value={ctrl.filterBegin} onChange={ctrl.handleBegin} isInvalid={!!ctrl.erros?.filterBegin} />
+              </Form.Group>
+            </Col>
+            <Col>
+              <Form.Group className="mb-3">
+                <Form.Label htmlFor="end">Fim:</Form.Label>
+                <Form.Control id="end" value={ctrl.filterEnd} onChange={ctrl.handleEnd} isInvalid={!!ctrl.erros?.filterBegin} />
+              </Form.Group>
+            </Col>
+          </Row>
+
           <Form.Group className="mb-3">
-            <Form.Label htmlFor="country">Índices:</Form.Label>
-            <Form.Select aria-label="Default select example" onChange={ctrl.handleIndex}>
+            <Form.Label htmlFor="indexes">Índices:</Form.Label>
+            <Form.Select id="indexes" onChange={ctrl.handleIndex}>
               <option>Selecione um índice</option>
               {ctrl.indexes.map((index, idx) => (
                 <option key={idx} value={index.name}>
@@ -66,7 +81,7 @@ const SearchBar = observer(() => {
             Buscar
           </Button>
 
-          <Button type="button" className="mb-2" variant="outline-secondary" disabled={!!ctrl.waiting} onClick={ctrl.handleClear}>
+          <Button type="submit" className="mb-2" variant="outline-secondary" disabled={!!ctrl.waiting} onClick={ctrl.handleClear}>
             Limpar
           </Button>
         </Col>

@@ -5,6 +5,7 @@ import { notify } from '../../../components/Notification';
 import type { ErrorListRecord } from '../../../commons/types/ErrorListRecord';
 import { SearchDataSource } from '../../../datasources/search';
 import type { Indexes } from '../../../datasources/search';
+import { DateTime } from 'luxon';
 
 export class AllLogsCtrl {
   constructor() {
@@ -16,6 +17,8 @@ export class AllLogsCtrl {
   @observable page = 1;
   @observable perPage = 250;
   @observable filterIndex = '';
+  @observable filterBegin = '';
+  @observable filterEnd = '';
   @observable filters = '';
 
   @observable waiting: boolean | null = null;
@@ -28,8 +31,12 @@ export class AllLogsCtrl {
   @action
   handleClear = () => {
     this.filterIndex = '';
+    this.filterBegin = DateTime.now().minus({ weeks: 1 }).toFormat('dd/MM/yyyy');
+    this.filterEnd = '';
     this.filters = `{ "where": {
-      "data": {}
+      "data": {
+
+      }
 }}`;
     this.response = null;
   };
@@ -42,6 +49,38 @@ export class AllLogsCtrl {
   @action
   handleContains = (e: any) => {
     this.filters = e.target.value;
+  };
+
+  @action
+  handleBegin = (e: any) => {
+    this.filterBegin = this.parseDateString(e.target.value);
+  };
+
+  @action
+  handleEnd = (e: any) => {
+    this.filterEnd = this.parseDateString(e.target.value);
+  };
+
+  private parseDateString = (value: string) => {
+    const numbers = value.replace(/[^\d]/g, '').substring(0, 8);
+    if (numbers.length === 8) {
+      const dateTime = DateTime.fromFormat(numbers, 'ddMMyyyy');
+      if (dateTime.isValid) {
+        return dateTime.toFormat('dd/MM/yyyy');
+      }
+    }
+    return value;
+  };
+
+  private parseDate = (value: string) => {
+    value = value.replace(/[^\d]/g, '').substring(0, 8);
+    if (value.length === 8) {
+      const dateTime = DateTime.fromFormat(value, 'ddMMyyyy');
+      if (dateTime.isValid) {
+        return dateTime;
+      }
+    }
+    return null;
   };
 
   @action
@@ -90,6 +129,16 @@ export class AllLogsCtrl {
       filters = JSON.parse(this.filters);
       filters.page = this.page;
       filters.perPage = this.perPage;
+
+      const begin = this.parseDate(this.filterBegin);
+      const end = this.parseDate(this.filterEnd);
+      if (begin && end) {
+        filters.where.time = { $gte: begin, $lte: end };
+      } else if (begin) {
+        filters.where.time = { $gte: begin };
+      } else if (begin) {
+        filters.where.time = { $lte: end };
+      }
     } catch (ex) {
       this.notifyExeption(ex);
       this.waiting = false;
