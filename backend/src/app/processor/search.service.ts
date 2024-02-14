@@ -3,12 +3,11 @@ import logConfig from 'src/config/log.config';
 import { Reader } from './io/reader';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as events from 'events';
 import LogRawData from 'src/commons/type/lograwdata';
-import { FilterQuery } from 'src/commons/type/whereoperator';
+import { FilterQuery, ObjectQuery } from 'src/commons/type/whereoperator';
 import { isEmpty } from 'lodash';
 import { testJsonWhere } from 'src/commons/testjsonwhere';
-import { resolveDirname } from 'src/commons/file.utils';
+import { getWriterDateFromFileName, resolveDirname } from 'src/commons/file.utils';
 
 type ReadFileCallback = (string) => void;
 type SearchOptions = { page?: number; perPage?: number };
@@ -32,11 +31,16 @@ export class SearchService {
 
     const dirname = resolveDirname(index);
     const reader = this.createReader(dirname);
-    const files = reader.listFiles();
+    let files = reader.listFiles();
 
     let lineIdx = 0;
     const startLine = (options.page - 1) * options.perPage;
     const endLine = startLine + options.perPage;
+
+    const time = (where as ObjectQuery<LogRawData>).time;
+    if (time) {
+      files = files.filter((path) => this.testFilename(path, time));
+    }
 
     // Carrega os arquivos
     for (const rl of this.readFileByFile(reader, files)) {
@@ -70,7 +74,16 @@ export class SearchService {
     return list;
   }
 
-  *readFileByFile(reader: Reader, files: Array<string>) {
+  /**
+   * Verifica se o nome do arquivo da math com o filtro de data
+   */
+  private testFilename(path: string, time) {
+    const fileNameDate = getWriterDateFromFileName(path).toISOString();
+
+    return this.testWhere({ time: fileNameDate } as any, { time });
+  }
+
+  private *readFileByFile(reader: Reader, files: Array<string>) {
     for (const file of files) {
       const rl = reader.createReadStream(file);
 
@@ -78,7 +91,7 @@ export class SearchService {
     }
   }
 
-  testWhere(line: LogRawData, where: FilterQuery<LogRawData>) {
+  private testWhere(line: LogRawData, where: FilterQuery<LogRawData>) {
     if (isEmpty(line)) return false;
     if (isEmpty(where)) return true;
 
@@ -86,6 +99,8 @@ export class SearchService {
   }
 
   createReader(dirname: string): Reader {
-    return new Reader({ dirname });
+    const reader = new Reader();
+    reader.init({ dirname });
+    return reader;
   }
 }

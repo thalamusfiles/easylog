@@ -8,14 +8,19 @@ type ReaderProps = {
   filename?: string;
 };
 
-// TODO: Transformar em interface e criar ReaderIndexedByDate
-export class Reader {
+interface Reader {
+  init(options: ReaderProps);
+  listFiles(): Array<string>;
+  createReadStream(filename: string): readline.Interface;
+}
+
+export class ReaderIdxByDate implements Reader {
   private readonly logger = new Logger(Reader.name);
 
   dirname: string;
   filename?: string;
 
-  constructor(options: ReaderProps) {
+  init(options: ReaderProps) {
     this.logger.log('Starting');
 
     this.dirname = options.dirname;
@@ -51,3 +56,7 @@ export class Reader {
     }
   }
 }
+
+const Reader = ReaderIdxByDate;
+
+export { Reader };

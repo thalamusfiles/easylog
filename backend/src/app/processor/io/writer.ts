@@ -1,8 +1,7 @@
 import { Logger } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
-
-const fileTest = /.*\/(\d{4})(\d{2})(\d{2})_\d{4}_\d+/;
+import { getWriterDateFromFileName, writerByDateTest } from 'src/commons/file.utils';
 
 type WriterProps = {
   nodeId: string;
@@ -20,8 +19,8 @@ interface Writer {
 /**
  * Cria arquivos de log pre indexados por data.
  */
-class WriterByDate implements Writer {
-  private readonly logger = new Logger(WriterByDate.name);
+class WriterIdxByDate implements Writer {
+  private readonly logger = new Logger(WriterIdxByDate.name);
 
   nodeId: string;
   lazy: boolean;
@@ -109,16 +108,13 @@ class WriterByDate implements Writer {
       .filter(
         (fileOrDir) =>
           !fs.statSync(fileOrDir).isDirectory() && //
-          fileTest.test(fileOrDir) &&
+          writerByDateTest.test(fileOrDir) &&
           fileOrDir.endsWith(`_${this.nodeId}`),
       );
 
     if (files.length) {
       this.currentPath = files[files.length - 1];
-
-      // Coleda o dia do arquivo
-      const [, year, month, day] = this.currentPath.match(fileTest);
-      this.lastDate = new Date(parseInt(year), parseInt(month), parseInt(day));
+      this.lastDate = getWriterDateFromFileName(this.currentPath);
     }
   }
 
@@ -220,6 +216,6 @@ class WriterByDate implements Writer {
   }
 }
 
-const Writer = WriterByDate;
+const Writer = WriterIdxByDate;
 
 export { Writer };
