@@ -3,6 +3,7 @@ import ChainSemaphore, { DoneFunction } from 'src/commons/chain.semaphore';
 import logConfig from 'src/config/log.config';
 import { Writer } from './io/writer';
 import { QueueService } from './queue.service';
+import { resolveDirname } from 'src/commons/file.utils';
 
 @Injectable({ scope: Scope.DEFAULT })
 export class PersistService {
@@ -56,18 +57,17 @@ export class PersistService {
 
   private initWriter(index: string) {
     if (!this.writers[index]) {
-      const dirname = this.resolveDirname(index);
+      const dirname = resolveDirname(index);
 
-      this.writers[index] = new Writer({
+      const writer = new Writer();
+      writer.init({
         nodeId: logConfig.NODE_ID,
         lazy: logConfig.LAZY,
         maxsize: logConfig.MAX_FILE_SIZE,
         dirname,
       });
-    }
-  }
 
-  private resolveDirname(index: string) {
-    return `${logConfig.FOLDER_PATH}/${index}/raw`;
+      this.writers[index] = writer;
+    }
   }
 }

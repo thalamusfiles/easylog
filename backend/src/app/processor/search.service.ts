@@ -8,6 +8,7 @@ import LogRawData from 'src/commons/type/lograwdata';
 import { FilterQuery } from 'src/commons/type/whereoperator';
 import { isEmpty } from 'lodash';
 import { testJsonWhere } from 'src/commons/testjsonwhere';
+import { resolveDirname } from 'src/commons/file.utils';
 
 type ReadFileCallback = (string) => void;
 type SearchOptions = { page?: number; perPage?: number };
@@ -29,7 +30,7 @@ export class SearchService {
   async seach(index: string, where: FilterQuery<LogRawData>, options?: SearchOptions): Promise<Array<any>> {
     const list: Array<any> = [];
 
-    const dirname = this.resolveDirname(index);
+    const dirname = resolveDirname(index);
     const reader = this.createReader(dirname);
     const files = reader.listFiles();
 
@@ -86,9 +87,5 @@ export class SearchService {
 
   createReader(dirname: string): Reader {
     return new Reader({ dirname });
-  }
-
-  private resolveDirname(index: string) {
-    return `${logConfig.FOLDER_PATH}/${index}/raw`;
   }
 }

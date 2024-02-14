@@ -2,6 +2,8 @@ import { Logger } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
 
+const fileTest = /.*\/(\d{4})(\d{2})(\d{2})_\d{4}_\d+/;
+
 type WriterProps = {
   nodeId: string;
   lazy: boolean;
@@ -10,13 +12,22 @@ type WriterProps = {
   dirname: string;
 };
 
-export class Writer {
-  private readonly logger = new Logger(Writer.name);
+interface Writer {
+  init(options: WriterProps);
+  write(data: any): void;
+}
+
+/**
+ * Cria arquivos de log pre indexados por data.
+ */
+class WriterByDate implements Writer {
+  private readonly logger = new Logger(WriterByDate.name);
 
   nodeId: string;
   lazy: boolean;
 
   wStream: fs.WriteStream;
+  lastDate: Date;
   currentPath: string;
   currentSize: number;
   maxsize: number;
@@ -24,7 +35,7 @@ export class Writer {
   dirname: string;
   opening: boolean;
 
-  constructor(options: WriterProps) {
+  init(options: WriterProps) {
     this.logger.log('Starting');
 
     this.nodeId = options.nodeId;
@@ -44,12 +55,15 @@ export class Writer {
   }
 
   write(data: any): void {
-    if (!this.wStream) {
-      this.open();
-    } else if (this.fileSizeExceeded(this.currentSize)) {
+    if (
+      // Caso já foi aberto o arquivo
+      this.wStream &&
+      // Caso tenha excedido o tamanho máximo ou se trocou de dia
+      (this.fileSizeExceeded(this.currentSize) || this.isNextDay())
+    ) {
       this.changeCurrentFile();
-      this.open();
     }
+    this.open();
 
     if (this.wStream) {
       this.wStream.write(data);
@@ -95,11 +109,16 @@ export class Writer {
       .filter(
         (fileOrDir) =>
           !fs.statSync(fileOrDir).isDirectory() && //
+          fileTest.test(fileOrDir) &&
           fileOrDir.endsWith(`_${this.nodeId}`),
       );
 
     if (files.length) {
       this.currentPath = files[files.length - 1];
+
+      // Coleda o dia do arquivo
+      const [, year, month, day] = this.currentPath.match(fileTest);
+      this.lastDate = new Date(parseInt(year), parseInt(month), parseInt(day));
     }
   }
 
@@ -154,10 +173,21 @@ export class Writer {
   }
 
   /**
+   * Verifica se a data do último arquivo aberto alterou
+   */
+  private isNextDay() {
+    const now = new Date();
+    return (
+      this.lastDate.getDate() !== now.getDate() || this.lastDate.getMonth() !== now.getMonth() || this.lastDate.getFullYear() !== now.getFullYear()
+    );
+  }
+
+  /**
    * Altera o nome do arquivo para o próximo da fila.
    */
   private changeCurrentFile() {
-    this.currentPath = this.nextFileName();
+    this.lastDate = new Date();
+    this.currentPath = this.nextFileName(this.lastDate);
   }
 
   /**
@@ -165,16 +195,15 @@ export class Writer {
    * @returns {string} - TODO: add return description.
    * @private
    */
-  private nextFileName() {
-    const date = new Date();
-
+  private nextFileName(date: Date) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     const hh = String(date.getHours()).padStart(2, '0');
     const mm = String(date.getMinutes()).padStart(2, '0');
+    const ss = String(date.getSeconds()).padStart(2, '0');
 
-    const filename = `${year}${month}${day}_${hh}${mm}_${this.nodeId}`;
+    const filename = `${year}${month}${day}_${hh}${mm}${ss}_${this.nodeId}`;
 
     return `${this.dirname}/${filename}`;
   }
@@ -190,3 +219,7 @@ export class Writer {
     );
   }
 }
+
+const Writer = WriterByDate;
+
+export { Writer };

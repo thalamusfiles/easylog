@@ -8,6 +8,7 @@ type ReaderProps = {
   filename?: string;
 };
 
+// TODO: Transformar em interface e criar ReaderIndexedByDate
 export class Reader {
   private readonly logger = new Logger(Reader.name);
 
