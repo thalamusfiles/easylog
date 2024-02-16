@@ -34,8 +34,11 @@ export class SearchService {
     let files = reader.listFiles();
 
     let lineIdx = 0;
-    const startLine = (options.page - 1) * options.perPage;
-    const endLine = startLine + options.perPage;
+    let startLine, endLine;
+    if (options.perPage) {
+      startLine = (options.page - 1) * options.perPage;
+      endLine = startLine + options.perPage;
+    }
 
     const time = (where as ObjectQuery<LogRawData>).time;
     if (time) {
