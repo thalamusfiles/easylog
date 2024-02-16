@@ -40,7 +40,7 @@ export class SearchService {
       endLine = startLine + options.perPage;
     }
 
-    const time = (where as ObjectQuery<LogRawData>).time;
+    const time = (where as ObjectQuery<LogRawData>)?.time;
     if (time) {
       files = files.filter((path) => this.testFilename(path, time));
     }
