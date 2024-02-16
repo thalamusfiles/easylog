@@ -32,10 +32,10 @@ export class SearchController {
   @ApiParam({ name: 'index', description: 'Indice para agrupamento dos dados' })
   @Get('/:index')
   @UsePipes(new RegisterValidationPipe())
-  async search(@Param('index') index: string, @Query() query: LogSearchDto): Promise<any> {
+  async search(@Param('index') index: string, @Query() { where, ...options }: LogSearchDto): Promise<any> {
     this.logger.log('search');
 
-    const itens = await this.searchService.seach(index, query.where);
+    const itens = await this.searchService.seach(index, where, options);
     return itens;
   }
 

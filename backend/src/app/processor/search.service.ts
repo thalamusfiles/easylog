@@ -35,7 +35,7 @@ export class SearchService {
 
     let lineIdx = 0;
     let startLine, endLine;
-    if (options.perPage) {
+    if (options?.perPage) {
       startLine = (options.page - 1) * options.perPage;
       endLine = startLine + options.perPage;
     }
@@ -54,7 +54,7 @@ export class SearchService {
           // Verifica se atende as condições dos filtros
           if (this.testWhere(json, where)) {
             // Se possui paginação
-            if (options.perPage) {
+            if (options?.perPage) {
               // Verifica se já encontrou a quantidade de registros informados
               if (startLine <= lineIdx && lineIdx < endLine) {
                 list.push(json);
