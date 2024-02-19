@@ -42,7 +42,6 @@ export class PersistService {
         this.initWriter(index);
 
         const writer = this.writers[index];
-        writer.write('\n');
 
         if (typeof data === 'object') {
           writer.write(JSON.stringify(data));

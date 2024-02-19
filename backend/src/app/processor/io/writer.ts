@@ -65,6 +65,7 @@ class WriterIdxByDate implements Writer {
     this.open();
 
     if (this.wStream) {
+      this.wStream.write('\n');
       this.wStream.write(data);
       this.currentSize += data.length;
     } else {
